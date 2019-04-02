@@ -408,7 +408,7 @@ class IgBot:
             print("  " + username + " is ok")
             return "ok"
 
-    #Loads and returns a list of links to 'num_posts' posts starting from post number 'start'
+    #Loads and returns a list of links to 'num_posts' posts starting from post number 'start'. 'target' can be a user or a hashtag (use the # symbol).
     def get_posts(self, target, num_posts=12, start=0):
         print("Loading " + str(num_posts) + " pictures...")
 
@@ -876,6 +876,26 @@ class IgBot:
                     break
 
         print("  " + str(followed) + " accounts followed")
+
+    #Follows the author of 'post'. Leave empty to use current page.
+    def follow_author(self, post=""):
+    	if (post != ""):
+    		if('/' in post):	#Post is a link
+    			self.driver.get(post)
+    		else:	#Post is an ID
+    			self.driver.get("https://www.instagram.com/p/" + post)
+    	time.sleep(1)
+
+    	author = self.driver.find_element_by_xpath("//a[contains(@class, 'notranslate')]")
+    	self.follow([author.text])
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     print("This file has no main! Import this module into your script to use it!")
