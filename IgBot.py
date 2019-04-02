@@ -877,8 +877,8 @@ class IgBot:
 
         print("  " + str(followed) + " accounts followed")
 
-    #Follows the author of 'post'. Leave empty to use current page.
-    def follow_author(self, post=""):
+    #Get the author of a post
+    def get_author(self, post=""):
     	if (post != ""):
     		if('/' in post):	#Post is a link
     			self.driver.get(post)
@@ -887,7 +887,68 @@ class IgBot:
     	time.sleep(1)
 
     	author = self.driver.find_element_by_xpath("//a[contains(@class, 'notranslate')]")
-    	self.follow([author.text])
+    	return author.text
+
+    #Follows 'percentage' of authors of posts in 'hashtag' starting from post 'start' until 'num_follows' is reached.
+    def follow_from_hashtag(self, hashtag, num_follows=5, percentage=100, start=0):
+        if('/' in hashtag):	#Is a link
+            self.driver.get(hashtag)
+        else:
+            if(hashtag[0] == '#'):	#Has # in front
+                self.driver.get("https://www.instagram.com/explore/tags/" + hashtag[1:])
+            else:
+                self.driver.get("https://www.instagram.com/explore/tags/" + hashtag)
+        time.sleep(1)
+
+        first_post = self.driver.find_element_by_xpath("//a[contains(@href, '/p/')]")
+        first_post.click()
+        time.sleep(1)
+
+        authors_followed = 0
+        authors_skipped = 0
+
+        #Skips to starting point
+        for i in range(start):
+            try:
+                right_arrow = self.driver.find_element_by_xpath("//a[contains(@class, 'coreSpriteRightPaginationArrow')]")
+                right_arrow.click()
+                time.sleep(1)
+            except:
+                print("Couldn't get to starting point! Not enough posts!")
+                return
+
+        while (authors_followed < num_follows):
+            try:
+                follow_button = self.driver.find_elements_by_xpath("//button[text() = 'Follow']")[1] #Gets the second "follow" button on the page. The first one is the follow button for the hashtag itself.
+                
+                #Randomly skips posts
+                if(random.randint(0,100) <= percentage):
+                    follow_button.click()
+                    time.sleep(0.5)
+
+                    authors_followed += 1
+                    print("  Author followed")
+                else:
+                    authors_skipped += 1
+                    print("  Author skipped")
+            except:
+                print("  Already following author!")
+
+            #Checks if done
+            if(authors_followed == num_follows):
+                print("Followed " + str(authors_followed) + " authors and skipped " + str(authors_skipped) + " possible authors.")
+                return
+            
+            #Moves on to the next post
+            try:
+                right_arrow = self.driver.find_element_by_xpath("//a[contains(@class, 'coreSpriteRightPaginationArrow')]")
+                right_arrow.click()
+                time.sleep(1)
+            except:
+                print("Reached last post!")
+                print("Followed " + str(authors_followed) + " authors and skipped " + str(authors_skipped) + " possible authors.")
+                return
+
 
 
 
