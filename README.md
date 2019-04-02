@@ -75,6 +75,9 @@ Posts random comments in target's posts.
 #### follower_unfollower
 Follows/unfollows the targets with all the accounts in `working_accounts_file`.
 
+#### hashtag_follower
+Follows authors from posts in the target hashtag page.
+
 #### liker_unliker
 Likes/unlikes target's posts.
 
@@ -245,7 +248,7 @@ Checks if the account is banned.
 Returns a list of links to target's posts.
 * PARAMETERS:
 
-**target**: Username of the target.
+**target**: Username of the target or target hashtag with the # symbol.
 
 **num_posts**: Number of posts to get. Defaults to 12.
 
@@ -360,3 +363,24 @@ Follows profiles from the suggested profiles page.
 * PARAMETERS:
 
 **num_follows**: Number of profiles to follow. Defaults to 10.
+
+### get_author(self, post)
+Gets the post's author.
+* PARAMETERS:
+
+**post**: Post to get the author from. Leave empty to use the current page.
+
+* RETURNS: A string with the username of the post's author.
+
+### follow_from_hashtag(self, hashtag, num_follows, percentage, start)
+Follows authors of posts in the specified hashtag.
+* PARAMETERS:
+
+**hashtag**: Hashtag to follow authors in.
+
+**num_follows**: Number of authors to follow in total.
+
+**percentage**: Percentage of authors to follow (e.g. setting this to 90 will make it so every author has a 10% chance of being skipped). Skipped posts do not count towards the number of posts deleted from. Defaults to 100.
+
+**start**: Starting point (e.g. start from the 10th post). Defaults to 0.
+
