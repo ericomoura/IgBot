@@ -170,7 +170,7 @@ class IgBot:
 
         time.sleep(1.5)
 
-        login_button = self.driver.find_element_by_xpath("//div[text() = 'Log in']")
+        login_button = self.driver.find_element_by_xpath("//div[text() = 'Log In']/..")
         login_button.click()
         time.sleep(5)
 
@@ -412,7 +412,10 @@ class IgBot:
     def get_posts(self, target, num_posts=12, start=0):
         print("Loading " + str(num_posts) + " pictures...")
 
-        self.driver.get('https://www.instagram.com/' + target)
+        if(target[0] == '#'):	#Target is a hashtag
+        	self.driver.get("https://www.instagram.com/explore/tags/" + target[1:])
+        else:	#Target is a profile
+        	self.driver.get('https://www.instagram.com/' + target)
         time.sleep(1)
 
         num_scrolls = floor((start+num_posts-1) / 12)  #Number of times to scroll the page to load all pictures. Pictures are loded in batches of 12.
