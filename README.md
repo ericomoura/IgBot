@@ -53,6 +53,7 @@ bot.log_in("username", "password")
 bot.follow("instagram")
 bot.quit()
 ```
+Tip: You can use `git update-index --skip-worktree <filename>` to keep changes to a file local. This might come in handy for files that contain sensitive information (e.g. `_configs.py` and scripts that contain account information). If the file you want to keep local isn't in the repository to begin with, you can exclude it by adding it to the file located at `.git/info/exclude`.
 
 ## Examples
 A handful of example scripts have been provided along with the module in the root directory of the project. You can run any of the scripts with the "help" argument to check the correct usage of each one.
