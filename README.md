@@ -385,3 +385,12 @@ Follows authors of posts in the specified hashtag.
 
 **start**: Starting point (e.g. start from the 10th post). Defaults to 0.
 
+### get_followers(self, target)
+Gets a list of users that follow the target.
+* PARAMETERS:
+
+**target**: Username of the profile to get followers from. Pass empty string to use the current account.
+
+* RETURNS: A list of strings with the usernames of the followers.
+
+
